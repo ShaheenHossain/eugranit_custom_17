@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Inherit and Extend the Invoice Report Template -->
+<!--    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        &lt;!&ndash; Ensure the 'doc' variable is set if not already &ndash;&gt;
+        <xpath expr="//div[contains(@class, 'partner')]" position="after">
+            <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                <tr t-if="doc.commitment_delivery_date">
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ccc;">Delivery Date:</td>
+                    <td style="padding: 5px; border: 1px solid #ccc;" t-field="doc.commitment_delivery_date" t-options="{'widget': 'date'}"/>
+                </tr>
+                <tr t-if="doc.measurement_date">
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ccc;">Aufmaß Datum:</td>
+                    <td style="padding: 5px; border: 1px solid #ccc;" t-field="doc.measurement_date" t-options="{'widget': 'date'}"/>
+                </tr>
+            </table>
+        </xpath>
+
+    </template>-->
+
+    <!-- Inherit and Extend the Account Move Form View -->
+    <record id="view_account_eugranit_form" model="ir.ui.view">
+        <field name="name">account.move.line.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="invoice_date" position="after">
+                <field name="commitment_delivery_date" string="Delivery Date" widget="date"/>
+                <field name="measurement_date" string="Aufmaß Datum" widget="date"/>
+            </field>
+        </field>
+    </record>
+
+
+
+<!--
+    <template id="external_layout_din5008_inherit" inherit_id="l10n_din5008.external_layout_din5008">
+        &lt;!&ndash; Add the table inside the information_block div &ndash;&gt;
+        <xpath expr="//div[@class='information_block']/table" position="after">
+            <table style="width: 100%;">
+                <tr t-if="doc.commitment_delivery_date">
+                    <td>Delivery Date:</td>
+                    <td t-esc="doc.commitment_delivery_date"/>
+                </tr>
+                <tr t-if="doc.measurement_date">
+                    <td>Aufmass Datum:</td>
+                    <td t-esc="doc.measurement_date"/>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+-->
+
+
+    <template id="external_layout_din5008_inherit" inherit_id="l10n_din5008.external_layout_din5008">
+        <xpath expr="//div[@class='information_block']/table" position="after">
+            <table style="width: 100%;">
+                <tr t-if="doc and doc.commitment_delivery_date">
+                    <td>Delivery Date:</td>
+                    <td t-esc="doc.commitment_delivery_date"/>
+                </tr>
+                <tr t-if="doc and doc.measurement_date">
+                    <td>Aufmass Datum:</td>
+                    <td t-esc="doc.measurement_date"/>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+
+
+
+    <!-- Sale Order Form View -->
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add fields after Salesperson -->
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="commitment_delivery_date" string="Delivery Date"/>
+                <field name="measurement_date" string="Aufmass Datum"/>
+            </xpath>
+
+            <!-- Add fields before picking_policy -->
+            <xpath expr="//field[@name='picking_policy']" position="before">
+                <field name="commitment_delivery_date" string="Delivery Date" />
+                <field name="measurement_date" string="Aufmass Datum"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    readonly="state == 'cancel' or locked"-->
+
+</odoo>
