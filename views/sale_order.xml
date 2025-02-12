@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Inherit and Extend the Invoice Report Template -->
-<!--    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
-        &lt;!&ndash; Ensure the 'doc' variable is set if not already &ndash;&gt;
-        <xpath expr="//div[contains(@class, 'partner')]" position="after">
-            <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
-                <tr t-if="doc.commitment_delivery_date">
-                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ccc;">Delivery Date:</td>
-                    <td style="padding: 5px; border: 1px solid #ccc;" t-field="doc.commitment_delivery_date" t-options="{'widget': 'date'}"/>
+
+
+         <!-- Inherit and Extend portal preview invoice account  off  style="font-weight: bold;" -->
+    <template id="external_layout_din5008_inherit" inherit_id="l10n_din5008.external_layout_din5008">
+        <xpath expr="//div[contains(@class, 'information_block')]/table" position="after">
+            <table style="width: 100%;">
+                <tr t-if="o.commitment_delivery_date">
+                    <td>Delivery Date:</td>
+                    <td t-esc="o.commitment_delivery_date" style="padding-right: 23px;"/>
                 </tr>
-                <tr t-if="doc.measurement_date">
-                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ccc;">Aufmaß Datum:</td>
-                    <td style="padding: 5px; border: 1px solid #ccc;" t-field="doc.measurement_date" t-options="{'widget': 'date'}"/>
+                <tr t-if="o.measurement_date">
+                    <td>Aufmaß Datum:</td>
+                    <td t-esc="o.measurement_date" style="padding-right: 23px;"/>
                 </tr>
             </table>
         </xpath>
+    </template>
 
-    </template>-->
+
+
 
     <!-- Inherit and Extend the Account Move Form View -->
     <record id="view_account_eugranit_form" model="ir.ui.view">
@@ -33,36 +36,32 @@
 
 
 
-<!--
-    <template id="external_layout_din5008_inherit" inherit_id="l10n_din5008.external_layout_din5008">
-        &lt;!&ndash; Add the table inside the information_block div &ndash;&gt;
-        <xpath expr="//div[@class='information_block']/table" position="after">
-            <table style="width: 100%;">
-                <tr t-if="doc.commitment_delivery_date">
-                    <td>Delivery Date:</td>
-                    <td t-esc="doc.commitment_delivery_date"/>
-                </tr>
-                <tr t-if="doc.measurement_date">
-                    <td>Aufmass Datum:</td>
-                    <td t-esc="doc.measurement_date"/>
-                </tr>
-            </table>
-        </xpath>
-    </template>
--->
+         <!-- Inherit and Extend portal preview quotation  it is ok but style try to fix-->
 
+    <template id="eugranit_custom_sale_content" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody[@id='sale_info_table']" position="after">
+            <table class="table table-borderless table-sm">
+                <tbody>
+                    <tr t-if="sale_order.commitment_delivery_date" style="font-size: 12px; white-space: nowrap;">
+                        <th class="ps-0 pb-0" style="font-weight: bold; padding-right: 25px;"
+                            data-oe-model="sale.order" data-oe-id="sale_order.id" data-oe-field="commitment_delivery_date">
+                            Delivery Date:
+                        </th>
+                        <td class="pb-0 text-wrap">
+                            <span t-field="sale_order.commitment_delivery_date" t-options="{'widget': 'date'}"/>
+                        </td>
+                    </tr>
 
-    <template id="external_layout_din5008_inherit" inherit_id="l10n_din5008.external_layout_din5008">
-        <xpath expr="//div[@class='information_block']/table" position="after">
-            <table style="width: 100%;">
-                <tr t-if="doc and doc.commitment_delivery_date">
-                    <td>Delivery Date:</td>
-                    <td t-esc="doc.commitment_delivery_date"/>
-                </tr>
-                <tr t-if="doc and doc.measurement_date">
-                    <td>Aufmass Datum:</td>
-                    <td t-esc="doc.measurement_date"/>
-                </tr>
+                    <tr t-if="sale_order.measurement_date" style="font-size: 12px; white-space: nowrap;">
+                        <th class="ps-0 pb-0" style="font-weight: bold; padding-left: 25px;"
+                            data-oe-model="sale.order" data-oe-id="sale_order.id" data-oe-field="measurement_date">
+                            Aufmaß Datum:
+                        </th>
+                        <td class="pb-0 text-wrap">
+                            <span t-field="sale_order.measurement_date" t-options="{'widget': 'date'}"/>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </xpath>
     </template>
@@ -82,13 +81,14 @@
             </xpath>
 
             <!-- Add fields before picking_policy -->
-            <xpath expr="//field[@name='picking_policy']" position="before">
+<!--            <xpath expr="//field[@name='picking_policy']" position="before">-->
+<!--            <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="commitment_delivery_date" string="Delivery Date" />
                 <field name="measurement_date" string="Aufmass Datum"/>
-            </xpath>
+            </xpath>-->
         </field>
     </record>
 
-    <!--    readonly="state == 'cancel' or locked"-->
+
 
 </odoo>
