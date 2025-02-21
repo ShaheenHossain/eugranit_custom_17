@@ -8,11 +8,11 @@
             <table style="width: 100%;">
                 <tr t-if="o.commitment_delivery_date">
                     <td>Delivery Date:</td>
-                    <td t-esc="o.commitment_delivery_date" style="padding-right: 23px;"/>
+                    <td t-esc="o.commitment_delivery_date.strftime('%d.%m.%Y')" style="padding-right: 27px;"/>
                 </tr>
                 <tr t-if="o.measurement_date">
                     <td>Aufmaß Datum:</td>
-                    <td t-esc="o.measurement_date" style="padding-right: 23px;"/>
+                    <td t-esc="o.measurement_date.strftime('%d.%m.%Y')" style="padding-right: 27px;"/>
                 </tr>
             </table>
         </xpath>
@@ -38,6 +38,7 @@
 
          <!-- Inherit and Extend portal preview quotation  it is ok but style try to fix-->
 
+<!--
     <template id="eugranit_custom_sale_content" inherit_id="sale.sale_order_portal_content">
         <xpath expr="//tbody[@id='sale_info_table']" position="after">
             <table class="table table-borderless table-sm">
@@ -65,29 +66,105 @@
             </table>
         </xpath>
     </template>
+-->
+
+
+<template id="eugranit_custom_sale_content" inherit_id="sale.sale_order_portal_content">
+    <xpath expr="//tbody[@id='sale_info_table']" position="after">
+        <table class="table table-borderless table-sm">
+            <tbody>
+                <tr t-if="sale_order.commitment_delivery_date" style="font-size: 14px; white-space: nowrap;">
+                    <th class="ps-0 pb-0" style="font-weight: bold; padding-right: 5px;"
+
+                        data-oe-model="sale.order" data-oe-id="sale_order.id" data-oe-field="commitment_delivery_date">
+                        Delivery Date:
+                    </th>
+<!--                    <td class="pb-0 text-wrap">-->
+<!--                    <td class="pb-0 text-end text-wrap">-->
+                    <td class="pb-0 text-wrap" style="text-align: left;">
+                        <t t-if="sale_order.commitment_delivery_date">
+                            <t t-esc="sale_order.commitment_delivery_date.strftime('%d.%m.%Y')"/>
+                        </t>
+                    </td>
+                </tr>
+                <tr t-if="sale_order.measurement_date" style="font-size: 14px; white-space: nowrap;">
+                    <th class="ps-0 pb-0" style="font-weight: bold; padding-left: 5px;"
+                        data-oe-model="sale.order" data-oe-id="sale_order.id" data-oe-field="measurement_date">
+                        Aufmaß Datum:
+                    </th>
+<!--                    <td class="pb-0 text-wrap">-->
+<!--                    <td class="pb-0 text-end text-wrap">-->
+                    <td class="pb-0 text-wrap" style="text-align: left;">
+                        <t t-if="sale_order.measurement_date">
+                            <t t-esc="sale_order.measurement_date.strftime('%d.%m.%Y')"/>
+                        </t>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </xpath>
+</template>
 
 
 
-    <!-- Sale Order Form View -->
+
+
+<!--
+    &lt;!&ndash; Sale Order Form View &ndash;&gt;
     <record id="view_order_form_inherit" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add fields after Salesperson -->
+            &lt;!&ndash; Add fields after Salesperson &ndash;&gt;
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="commitment_delivery_date" string="Delivery Date"/>
                 <field name="measurement_date" string="Aufmass Datum"/>
             </xpath>
 
-            <!-- Add fields before picking_policy -->
-<!--            <xpath expr="//field[@name='picking_policy']" position="before">-->
-<!--            <xpath expr="//field[@name='partner_id']" position="after">
+            &lt;!&ndash; Add fields before picking_policy &ndash;&gt;
+&lt;!&ndash;            <xpath expr="//field[@name='picking_policy']" position="before">&ndash;&gt;
+&lt;!&ndash;            <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="commitment_delivery_date" string="Delivery Date" />
                 <field name="measurement_date" string="Aufmass Datum"/>
-            </xpath>-->
+            </xpath>&ndash;&gt;
         </field>
     </record>
+-->
+
+
+
+<!-- Sale Order Form View for PDF -->
+<record id="view_order_form_inherit" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <!-- Add fields after Salesperson -->
+        <xpath expr="//field[@name='user_id']" position="after">
+            <field name="commitment_delivery_date" string="Delivery Date"/>
+            <field name="measurement_date" string="Aufmass Datum"/>
+        </xpath>
+    </field>
+</record>
+
+<!-- Sale Order Report (PDF) Template -->
+<!--
+<template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+    <xpath expr="//div[@class='row mt32 mb32']" position="after">
+        <div style="margin-top: 10px; font-size: 12px;">
+            <t t-if="doc.commitment_delivery_date">
+                <strong>Delivery Date: </strong> <t t-esc="doc.commitment_delivery_date.strftime('%d.%m.%Y')"/>
+            </t>
+            <br/>
+            <t t-if="doc.measurement_date">
+                <strong>Aufmaß Datum: </strong> <t t-esc="doc.measurement_date.strftime('%d.%m.%Y')"/>
+            </t>
+        </div>
+    </xpath>
+</template>
+-->
+
 
 
 
