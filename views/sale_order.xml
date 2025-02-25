@@ -7,7 +7,7 @@
         <xpath expr="//div[contains(@class, 'information_block')]/table" position="after">
             <table style="width: 100%;">
                 <tr t-if="o.commitment_delivery_date">
-                    <td>Delivery Date:</td>
+                    <td>Lieferdatum:</td>
                     <td t-esc="o.commitment_delivery_date.strftime('%d.%m.%Y')" style="padding-right: 27px;"/>
                 </tr>
                 <tr t-if="o.measurement_date">
@@ -28,7 +28,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <field name="invoice_date" position="after">
-                <field name="commitment_delivery_date" string="Delivery Date" widget="date"/>
+                <field name="commitment_delivery_date" string="Lieferdatum" widget="date"/>
                 <field name="measurement_date" string="Aufmaß Datum" widget="date"/>
             </field>
         </field>
@@ -77,7 +77,7 @@
                     <th class="ps-0 pb-0" style="font-weight: bold; padding-right: 5px;"
 
                         data-oe-model="sale.order" data-oe-id="sale_order.id" data-oe-field="commitment_delivery_date">
-                        Delivery Date:
+                        Lieferdatum:
                     </th>
 <!--                    <td class="pb-0 text-wrap">-->
 <!--                    <td class="pb-0 text-end text-wrap">-->
@@ -142,7 +142,7 @@
     <field name="arch" type="xml">
         <!-- Add fields after Salesperson -->
         <xpath expr="//field[@name='user_id']" position="after">
-            <field name="commitment_delivery_date" string="Delivery Date"/>
+            <field name="commitment_delivery_date" string="Lieferdatum"/>
             <field name="measurement_date" string="Aufmass Datum"/>
         </xpath>
     </field>
