@@ -3,6 +3,9 @@ from odoo import models, fields
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    external_partner_id = fields.Many2one('res.partner', string='External Customer')
+
+
     commitment_delivery_date = fields.Date(string="Delivery Date")
     measurement_date = fields.Date(string="Aufmass Datum")
 
@@ -14,36 +17,15 @@ class SaleOrder(models.Model):
         })
         return invoice_vals
 
+    is_external_company = fields.Boolean(
+        string="External Company",
+        compute="_compute_is_external_company",
+        store=True,  # ✅ Make sure the field is stored
+        related='partner_id.is_external_company',
+        readonly=True
 
+    )
 
-
-# class AccountMove(models.Model):
-#     _inherit = 'account.move'
-#
-#
-#     commitment_delivery_date = fields.Date(
-#         string="Delivery Date",
-#         related="invoice_origin_id.commitment_delivery_date",
-#         store=True
-#     )
-#     measurement_date = fields.Date(
-#         string="Aufmaß Datum",
-#         related="invoice_origin_id.measurement_date",
-#         store=True
-#     )
-#
-#     invoice_origin_id = fields.Many2one(
-#         'sale.order',
-#         compute="_compute_invoice_origin_id",
-#         store=True,
-#         string="Original Quotation"
-#     )
-#
-#     def _compute_invoice_origin_id(self):
-#         for move in self:
-#             move.invoice_origin_id = self.env['sale.order'].search(
-#                 [('name', '=', move.invoice_origin)], limit=1
-#             ) or False
 
 
 class AccountMove(models.Model):
@@ -52,3 +34,17 @@ class AccountMove(models.Model):
     commitment_delivery_date = fields.Date(string="Delivery Date")
     measurement_date = fields.Date(string="Aufmaß Datum")
 
+
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    is_external_company = fields.Boolean(string="External Company")
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    commitment_delivery_date = fields.Datetime("Commitment Delivery Date")
+    measurement_date = fields.Date(string="Aufmaß Datum")

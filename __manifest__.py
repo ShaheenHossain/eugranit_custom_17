@@ -4,6 +4,7 @@
     'depends': ['base', 'mail', 'account', 'sale', 'web'],
     'data': [
         'views/sale_order.xml',
+        'views/external_company.xml',
         # 'security/ir.model.access.csv',
 
     ],
