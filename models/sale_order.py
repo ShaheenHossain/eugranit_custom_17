@@ -41,6 +41,10 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     is_external_company = fields.Boolean(string="External Company")
+    commitment_delivery_date = fields.Datetime("Commitment Delivery Date")
+    measurement_date = fields.Date(string="Aufmaß Datum")
+
+
 
 
 class StockPicking(models.Model):
